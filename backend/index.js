@@ -10,6 +10,15 @@ app.use(express.json());
 
 app.use("/api/v1", rootRouter);
 
-app.listen(3000,(req,res)=>{
-    console.log("Successfully running");
-});
+const setupAdminJS = require('./admin/setup');
+
+// We have to wait for AdminJS to be setup before listening
+const start = async () => {
+  await setupAdminJS(app);
+
+  app.listen(3000, () => {
+      console.log("Server is running on port 3000");
+  });
+};
+
+start();

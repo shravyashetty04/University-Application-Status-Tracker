@@ -13,7 +13,8 @@ const signupBody = zod.object({
     username: zod.string().email(),
     firstName: zod.string(),
     lastName: zod.string(),
-    password: zod.string()
+    password: zod.string(),
+    course: zod.string()
 });
 
 router.post("/signup", async (req, res) => {
@@ -43,11 +44,18 @@ router.post("/signup", async (req, res) => {
         lastName: req.body.lastName,
     });
 
+    // Create an application for the student
+    await Application.create({
+        userId: user._id,
+        course: req.body.course
+    });
+
     const token = jwt.sign({ userId: user._id }, JWT_SECRET);
 
     res.json({
         message: "User created successfully",
-        token: token
+        token: token,
+        role: user.role
     });
 });
 
@@ -85,7 +93,10 @@ router.post("/signin", async (req, res) => {
 
     const token = jwt.sign({ userId: user._id }, JWT_SECRET);
 
-    res.json({ token });
+    res.json({ 
+        token,
+        role: user.role
+    });
 });
 
 // Zod schema for update

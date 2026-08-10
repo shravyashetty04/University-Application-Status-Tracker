@@ -1,7 +1,9 @@
 // backend/db.js
 const mongoose = require('mongoose');
 
-mongoose.connect("mongodb+srv://shravyashetty415:chaviii04@cluster0.cdnmfju.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/users")
+mongoose.connect("mongodb://shravyashetty415_db_user:Tooh6OkqQK0sbhQI@ac-twbmz1p-shard-00-00.fc3bywh.mongodb.net:27017,ac-twbmz1p-shard-00-01.fc3bywh.mongodb.net:27017,ac-twbmz1p-shard-00-02.fc3bywh.mongodb.net:27017/users?ssl=true&replicaSet=atlas-n27ewq-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0")
+.then(() => console.log("Connected to MongoDB successfully"))
+.catch(err => console.error("Failed to connect to MongoDB:", err.message));
 // Create a Schema for Users
 const userSchema = new mongoose.Schema({
     username: {
@@ -29,6 +31,11 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
         maxLength: 50
+    },
+    role: {
+        type: String,
+        enum: ['student', 'admin'],
+        default: 'student'
     }
 });
 // Create a schema for application

@@ -4,17 +4,27 @@ import Home from './pages/Home';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Admissions from './pages/Admissions';
+import CampusLife from './pages/CampusLife';
+import Research from './pages/Research';
 
-// Protected Route component
+// Protected Route component for students
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('token');
-  return token ? children : <Navigate to="/login" />;
+  
+  if (!token) return <Navigate to="/login" />;
+  
+  return children;
 };
 
 // Redirect if already logged in
 const PublicRoute = ({ children }) => {
   const token = localStorage.getItem('token');
-  return token ? <Navigate to="/dashboard" /> : children;
+  
+  if (token) {
+    return <Navigate to="/dashboard" />;
+  }
+  return children;
 };
 
 function App() {
@@ -22,6 +32,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/admissions" element={<Admissions />} />
+        <Route path="/campus-life" element={<CampusLife />} />
+        <Route path="/research" element={<Research />} />
         <Route path="/signup" element={
           <PublicRoute>
             <Signup />
