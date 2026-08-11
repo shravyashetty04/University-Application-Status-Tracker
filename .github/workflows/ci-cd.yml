@@ -1,0 +1,67 @@
+name: Complete PHP CI/CD Pipeline
+
+# 1. Define what triggers the pipeline
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # ==========================================
+  # CONTINUOUS INTEGRATION (Build & Test)
+  # ==========================================
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Setup PHP environment
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+          coverage: xdebug
+
+      # Step 3: Check PHP Syntax (Linting)
+      - name: PHP Syntax Checker (Lint)
+        run: find . -name "*.php" -print0 | xargs -0 -n1 php -l
+
+      # Step 4: Install Dependencies (if using Composer)
+      # - name: Install Dependencies
+      #   run: composer install --prefer-dist --no-progress
+
+      # Step 5: Run Tests (if using PHPUnit)
+      # - name: Execute tests via PHPUnit
+      #   run: vendor/bin/phpunit
+
+  # ==========================================
+  # CONTINUOUS DEPLOYMENT (Deploy to Server)
+  # ==========================================
+  deploy:
+    name: Deploy to Production
+    needs: build-and-test # This ensures deployment ONLY happens if tests pass
+    runs-on: ubuntu-latest
+    
+    # Only deploy when code is pushed to main (not on pull requests)
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Example: Deploying via SSH/Rsync to a VPS (AWS, DigitalOcean, Hostinger, etc.)
+      - name: Deploy to Server via SSH
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          ARGS: "-rlgoDzvc -i --delete"
+          SOURCE: "./" # What to copy from your repo
+          REMOTE_HOST: ${{ secrets.SERVER_IP }}
+          REMOTE_USER: ${{ secrets.SERVER_USERNAME }}
+          TARGET: ${{ secrets.SERVER_DESTINATION_PATH }} # e.g., /var/www/html/mywebsite/
