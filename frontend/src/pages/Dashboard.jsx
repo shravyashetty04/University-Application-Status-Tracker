@@ -24,7 +24,8 @@ const Dashboard = () => {
     const token = localStorage.getItem('token');
     
     try {
-      const response = await fetch('http://localhost:3000/api/v1/application', {
+      const API_URL = 'http://ec2-13-61-144-78.eu-north-1.compute.amazonaws.com:3000';
+      const response = await fetch(`${API_URL}/api/v1/application`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -57,7 +58,8 @@ const Dashboard = () => {
     const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch('http://localhost:3000/api/v1/application', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const response = await fetch(`${API_URL}/api/v1/application`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

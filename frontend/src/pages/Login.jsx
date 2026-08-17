@@ -24,7 +24,8 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:3000/api/v1/user/signin', {
+      const API_URL = 'http://ec2-13-61-144-78.eu-north-1.compute.amazonaws.com:3000';
+      const response = await fetch(`${API_URL}/api/v1/user/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

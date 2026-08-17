@@ -52,7 +52,7 @@ const setupAdminJS = async (app) => {
         return false;
       },
       cookieName: 'adminjs',
-      cookiePassword: 'some-super-secret-password-which-should-be-long-enough', 
+      cookiePassword: process.env.COOKIE_PASSWORD || 'a-long-fallback-development-password-which-should-be-long-enough', 
     },
     null,
     {

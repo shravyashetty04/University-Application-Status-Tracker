@@ -12,7 +12,7 @@ async function createAdmin() {
         // Define admin details here
         const adminData = {
             username: 'admin@university.edu',
-            password: 'AdminPassword123!',
+            password: process.env.ADMIN_PASSWORD,
             firstName: 'System',
             lastName: 'Administrator',
             role: 'admin'
@@ -33,7 +33,7 @@ async function createAdmin() {
         await User.create(adminData);
         console.log(`\nSuccess! Admin account created.`);
         console.log(`Email: admin@university.edu`);
-        console.log(`Password: AdminPassword123!\n`);
+        console.log(`Password: (hidden for security)\n`);
         
         process.exit(0);
     } catch (error) {

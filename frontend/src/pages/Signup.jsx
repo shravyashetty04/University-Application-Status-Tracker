@@ -48,7 +48,8 @@ const Signup = () => {
     try {
       const { confirmPassword, ...submitData } = formData;
       
-      const response = await fetch('http://localhost:3000/api/v1/user/signup', {
+      const API_URL = 'http://ec2-13-61-144-78.eu-north-1.compute.amazonaws.com:3000';
+      const response = await fetch(`${API_URL}/api/v1/user/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

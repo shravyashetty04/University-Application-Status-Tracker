@@ -1,7 +1,7 @@
 // backend/db.js
 const mongoose = require('mongoose');
 
-mongoose.connect("mongodb://shravyashetty415_db_user:Tooh6OkqQK0sbhQI@ac-twbmz1p-shard-00-00.fc3bywh.mongodb.net:27017,ac-twbmz1p-shard-00-01.fc3bywh.mongodb.net:27017,ac-twbmz1p-shard-00-02.fc3bywh.mongodb.net:27017/users?ssl=true&replicaSet=atlas-n27ewq-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("Connected to MongoDB successfully"))
 .catch(err => console.error("Failed to connect to MongoDB:", err.message));
 // Create a Schema for Users
