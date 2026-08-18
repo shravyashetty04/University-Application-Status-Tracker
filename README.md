@@ -49,6 +49,38 @@ Applying to multiple universities often involves juggling varying deadlines, por
 
 ---
 
+## 🏛️ Project Architecture
+
+```mermaid
+graph TD
+    User([User / Browser])
+    Developer([Developer])
+
+    subgraph AWS["AWS EC2 Instance"]
+        subgraph Kubernetes["Kubernetes Cluster"]
+            Frontend[React.js Frontend<br/>Nginx]
+            Backend[Node.js Backend<br/>Express API]
+            Prometheus[Prometheus]
+            Grafana[Grafana Dashboard]
+        end
+    end
+    
+    Database[(MongoDB Atlas<br/>Cloud Database)]
+    GitHub[GitHub Actions<br/>CI/CD Pipeline]
+
+    User -->|HTTP/HTTPS| Frontend
+    Frontend -->|REST API Calls| Backend
+    Backend -->|Mongoose Connection| Database
+    
+    Developer -->|git push| GitHub
+    GitHub -->|Builds & Deploys| Kubernetes
+    
+    Prometheus -.->|Scrapes Metrics| Kubernetes
+    Grafana -.->|Reads Metrics| Prometheus
+```
+
+---
+
 ## ✨ Key Features
 
 * 🔐 **Secure Authentication:** Full sign-up and login flows using Bcrypt password hashing and stateless JWT session management.
